@@ -1,0 +1,69 @@
+﻿@model IEnumerable<NewsWebApp.Models.Comment>
+
+@{
+    ViewData["Title"] = "Dashboard : All Comment";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+<p>
+    @*<a asp-action="Create">Create New</a>*@
+</p>
+<div class="container-fluid">
+<h1>Pending Comments</h1>
+    <table class="table pt">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CContent)
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Post)*@
+                    User
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                  Approved
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CContent)
+                </td>
+                <td>
+                    @{
+                        var index = item.Post.AppUser.UserName.IndexOf('@');
+
+                        var name = item.Post.AppUser.UserName.Substring(0, index);
+                    }
+                    @name
+
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateComment)
+                </td>
+                <td>
+                 
+                <span>❌</span>
+                
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.CommentId">Edit</a>
+                    @*<a asp-action="Details" asp-route-id="@item.CommentId">Details</a>*@
+                <a class="btn btn-danger btn-sm delBtn text-light" data-id="@item.CommentId">Delete</a>
+                </td>
+            </tr>}
+        </tbody>
+    </table>
+
+</div>

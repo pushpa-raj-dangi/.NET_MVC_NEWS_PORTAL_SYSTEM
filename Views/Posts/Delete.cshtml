@@ -1,0 +1,22 @@
+﻿@model Post
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="" asp-controller="Posts" asp-action="DeleteConfirm" method="post">
+                <h3>Are you sure to delete <span class="text-primary">@Model.Name</span> ?</h3>
+                <input type="hidden" name="Id" value="@Model.Id" />
+                <div class="my-5"></div>
+                <a class="dbtn text-danger">❎ Cancel</a>
+                <button type="submit" class="btn btn-danger">✅ Delete</button>
+                <div class="my-5"></div>
+            </form>
+        </div>
+
+    </div>
+   
+</div>

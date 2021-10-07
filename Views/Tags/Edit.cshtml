@@ -1,0 +1,25 @@
+﻿@model Tag
+@{ ViewData["Title"] = "Edit tag";
+                Layout = "~/Views/Shared/_Admin.cshtml"; }
+
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="my-3">Edit Tag @Model.Name</h3>
+                    <form asp-controller="tags" asp-action="Edit" method="post">
+                        <input class="form-control" asp-for="Name" /> <br />
+
+                        <div class="my-4">
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <a href="/tags" class="btn btn-primary">← Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

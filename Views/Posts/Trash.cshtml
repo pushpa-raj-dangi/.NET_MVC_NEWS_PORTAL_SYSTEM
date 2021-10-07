@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Post>
+@{
+    ViewData["Title"] = "Dashboard : Trash Post";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+
+}
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+            @*<h1>All Post</h1>*@
+            <div class="row">
+                @*<div class="col-md-4 offset-8">
+                    <input id="input" class="form-control my-3" type="text" placeholder="Search Post...">
+                    </div>*@
+                <table class="table table-borderd pt" id="postTable">
+                    <thead>
+                        <tr class="table-active">
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Categories
+                            </th>
+                            <th>
+                                Tags
+                            </th>
+                            <th>
+                                Author
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table">
+                        @foreach (var post in Model)
+                        {
+                            <tr style="height:85px">
+                                <td class="action-table">
+                                    @post.Name
+                                    @if (User.Identity.IsAuthenticated && post.AppUser.UserName == User.Identity.Name)
+                                    {
+                                        <span class="action-link">
+                                            <a class="text-danger" asp-controller="posts" asp-action="delete" asp-route-id="@post.Id"> Delete </a>|
+
+                                            <a href="/posts/edit/@post.Id">Edit</a> |
+                                            <a href="/posts/news/@post.Slug">View</a>
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @string.Join(", ", post.PostCategories.Select(p => p.Category.Name))
+                                </td>
+
+                                <td>
+                                    @string.Join(", ", post.PostTags.Select(p => p.Tag.Name))
+                                </td>
+                                <td>
+                                    @post.AppUser.UserName
+                                </td>
+
+                            </tr>
+
+
+                        }
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

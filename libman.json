@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@5.15.2",
+      "destination": "Helpers/font-awesome/"
+    },
+    {
+      "library": "tinymce@5.7.0",
+      "destination": "wwwroot/tinymce/"
+    },
+    {
+      "library": "bootstrap-multiselect@0.9.16",
+      "destination": "wwwroot/bootstrap-multiselect/"
+    },
+    {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/select2/"
+    },
+    {
+      "library": "AlertifyJS@1.13.1",
+      "destination": "wwwroot/lib/AlertifyJS/"
+    }
+  ]
+}

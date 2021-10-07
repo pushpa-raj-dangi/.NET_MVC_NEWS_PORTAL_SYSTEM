@@ -1,0 +1,75 @@
+﻿@model NewsWebApp.ViewModels.PostCreateViewModel
+@{
+    ViewData["Title"] = "Edit "+Model.Name;
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    var categories = ViewData["categories"] as IEnumerable<Category>;
+    var tags = ViewData["tags"] as IEnumerable<Tag>;
+}
+
+    <div class="container">
+        <div class="row">
+        
+            <div class="col-md-12">
+                <h1>Edit Post</h1>
+
+                <div class="container my-5">
+
+                    <form asp-controller="Posts" enctype="multipart/form-data" asp-action="Edit" method="post">
+                        <div class="mb-3">
+                            @Html.HiddenFor(p => p.Id)
+                            <label asp-for="Name" class="form-label"></label>
+                            <input class="form-control" placeholder="Title" asp-for="Name">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Content" class="form-label"></label>
+                            <textarea class="form-control create-post" asp-for="Content"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label  w-100">Categories</label>
+                                    <select asp-for="SelectedCategory" asp-items="ViewBag.Categories" class="s2cat form-control "></select>
+
+                                    @*  <select multiple name="SelectedCategoryIds" id="SelectedCategoryIds" asp-items="@(new MultiSelectList(categories,"Id","Name",selectedCat))" class="s2 form-control"></select>*@
+
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label w-100">Tags</label>
+                                    <select asp-for="SelectedTag" asp-items="ViewBag.Tags" class="sTag form-control "></select>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="PostStatus" class="form-label"></label>
+                                    <select asp-for="PostStatus" asp-items="Html.GetEnumSelectList<PostStatus>()" class="form-control"></select>
+                                </div>
+                                <button type="submit" class="btn mt-3 btn-lg btn-primary">Update</button>
+
+                            </div>
+                            <div class="col-md-8">
+                                <div class="upload-img p-4">
+                                    <img id="editimg" src="~/uploads/@Model.Post.Picture" />
+                                    <input id="myimg" type="file" asp-for="Picture" class="custom-in" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    @section Scripts{
+        <script>
+            $(document).ready(function () {
+                $(".custom-file-input").on("change", function () {
+                    var file = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(`<img src="/uploads/${file}"/>`);
+                })
+            })
+        </script>
+    }

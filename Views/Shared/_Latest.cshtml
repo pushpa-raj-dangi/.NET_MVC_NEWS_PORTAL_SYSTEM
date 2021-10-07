@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Post>
+<div class="card custom-img shadow-sm rounded-0 sticky-top">
+    <h4 class="card shadow-sm bg-primary text-light rounded-0 p-3">Latest Update News</h4>
+
+    @foreach (var post in Model)
+    {
+        <a href="/posts/news/@post.Slug">
+            <div class="media p-2">
+                @if (post.Picture != null)
+                {
+
+                    <img class="mr-3" src="~/uploads/@post.Picture" alt="Generic placeholder image">
+                }
+                else
+                {
+                    <img class="mr-3" src="~/uploads/placeholder.png" alt="Generic placeholder image">
+
+                }
+            <div class="media-body">
+                <h6 class="mt-0">@post.Name</h6>
+                <div class="time">
+                    <i class="fas fa-clock"></i>  @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                </div>
+                @*<h6 class="mt-0 text-muted">Author @post.AppUser.ProfileImg</h6>*@
+            </div>
+            </div>
+        </a>
+    }
+</div>

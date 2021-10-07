@@ -1,0 +1,58 @@
+﻿@model NewsWebApp.ViewModels.TagViewModel
+@{
+    ViewData["Title"] = "All Tags";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-12">
+            <h3 class="text-muted">Tags</h3>
+
+            <div class="row">
+                <div class="col-md-5">
+
+                    <form asp-controller="tags" asp-action="Create" method="post">
+                        <input class="form-control my-3" asp-for="Tag.Name" placeholder="Title" /> <br />
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <button type="submit" class="btn btn-primary">Create New Tag</button>
+                    </form>
+                </div>
+                <div class="col-md-7">
+
+                    <table class="table table-borderd tg" id="tag">
+                        <thead>
+                            <tr class="bg-light" style="height:65px">
+                                <th>Name</th>
+                                <th>Slug</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tagTable">
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <tr style="height:25px">
+                                    <td class="action-table">
+                                        @tag.Name
+                                        <span class="action-link">
+                                            <a asp-route-id="@tag.Id" asp-controller="Tags" asp-action="Delete"> Delete </a> |
+                                            <a asp-route-id="@tag.Id" asp-controller="Tags" asp-action="Edit"> Edit </a>
+                                        </span>
+                                    </td>
+                                    <td>@tag.Slug</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+

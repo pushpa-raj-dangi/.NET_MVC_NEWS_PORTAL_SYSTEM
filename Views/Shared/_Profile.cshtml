@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                    @{var index = User.Identity.Name.IndexOf('@'); }
+                    @User.Identity.Name.Substring(0, index)
+                </span>
+
+                                @if (UserManager.Users.FirstOrDefault(m => m.UserName == User.Identity.Name).ProfileImg != null)
+                                {
+                <img class="img-profile rounded-circle" src="~/uploads/@UserManager.Users.FirstOrDefault(m => m.UserName == User.Identity.Name).ProfileImg" alt="Alternate Text" />
+                                    }
+                                
+                                else
+                                {
+
+<img class="img-profile rounded-circle" src="~/uploads/user.png" alt="Alternate Text" />
+}
+                        
+                        
+                        }
+

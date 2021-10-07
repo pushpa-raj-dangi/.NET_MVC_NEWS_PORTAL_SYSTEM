@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Linq 
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> userManager
+
+@model IEnumerable<AppUser>
+@{ ViewData["Title"] = "All Users";
+                Layout = "~/Views/Shared/_Admin.cshtml"; }
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-12">
+            <h1>All Users</h1>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>User Name</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+            <tr>
+                <td>
+                    @if (user.ProfileImg != null)
+                    {
+            <img style="width:60px;" src="~/uploads/@user.ProfileImg" alt="@user.NormalizedUserName" /> }
+        else
+        {
+            <img style="width:60px;" src="~/uploads/user.png" alt="@user.NormalizedUserName" />}
+                </td>
+                <td>@user.NormalizedUserName</td>
+                <td>@user.Email</td>
+                <td><a href="/users/edit/@user.Id">📝</a></td>
+
+            </tr>
+}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

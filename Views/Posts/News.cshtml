@@ -1,0 +1,157 @@
+﻿@model PostDetailViewModel
+@{
+    ViewData["Title"] = Model.Post.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var posts = ViewData["relatedPost"] as IEnumerable<Post>;
+    var latest = ViewData["latest"] as IEnumerable<Post>;
+}
+
+<div class="container">
+    @if(User.Identity.IsAuthenticated&& User.IsInRole("Admin") && Model.AppUser.UserName == User.Identity.Name)
+            {
+
+    <a href="/posts/edit/@Model.Post.Id">
+        <div class="edit-btn btn btn-success">
+            <i class="fas fa-edit"></i>
+        </div>
+    </a>
+            }
+    <div id="progress-bar" class="sticky-top"></div>
+    <div class="row my-5">
+
+        <div class="col-md-8">
+
+
+            <div class="shadow-sm p-3">
+
+                @*@{
+                    if (User.Identity.IsAuthenticated && Model.AppUser.UserName == User.Identity.Name)
+                    {
+                        <div class="">
+                            <partial name="_Actions" model="Model" />
+                        </div>
+                    } }*@
+                <h3 class="my-5">@Model.Post.Name</h3>
+                <hr />
+
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-md-3">
+                        <a href="/posts/postbyauthor/@Model.Post.AppUserId">
+                            <img src="~/uploads/@Model.Post.AppUser.ProfileImg" class="rounded-circle" style="width:40px;object-fit:cover;height:40px">
+                            @{ var index = Model.Post.AppUser.UserName.IndexOf('@'); }
+                            @Model.Post.AppUser.UserName.Substring(0, index)
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="#comment">
+                            <span class="comment-box">
+                                <span class="count">@(@Model.ListComments.Count() > 0 ? "" + @Model.ListComments.Count() + "" : "0")</span>  COMMENTS
+                            </span>
+                        </a>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="time text-dark" style="font-size:13px">
+                            Published On
+                            <i class="fas fa-clock"></i> @Model.Post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                @if (Model.Post.Picture != null)
+                {
+                    <img src="~/uploads/@Model.Post.Picture" />}
+                <hr />
+                @foreach (var item in Model.PostCategories)
+                {
+                    <a href="/posts/postbycat/@item.Category.Id">
+                        <div class="category">
+                            <span>
+                                @item.Category.Name
+                            </span>
+                        </div>
+                    </a>}
+                @Html.Raw(Model.Post.Content)
+
+                <div class="tag-wrapper my-5">
+                    @foreach (var item in Model.Post.PostTags)
+                    {
+                        <a href="/posts/postbytag/@item.Tag.Id" class="tag">
+                            # @item.Tag.Name 
+                        </a>
+                    }
+                </div>
+
+            </div>
+            <div class="my-5"></div>
+            <partial name="_Comment" />
+
+
+        </div>
+        <div class="col-md-4">
+            <partial name="_Latest" model="latest" />
+        </div>
+
+
+
+        <div class="col-md-12 pt-5 my-4">
+            <div class="cat-title"> Related News    </div>
+        </div>
+        @foreach (var post in posts)
+        {
+
+            <div class="col-md-4 my-4">
+
+                <a href="/posts/news/@post.Slug">
+                    <div class="card shadow-sm h-100 border-0">
+                        @if (post.Picture != null)
+                        {
+                            <img src="~/uploads/@post.Picture" />
+                        }
+                        else
+                        {
+                            <img src="~/uploads/default.jpg" />
+
+                        }
+                        <div class="card-body">
+                            @post.Name
+                            <div class="time text-dark">
+
+                                <i class="fas fa-clock"></i> @Model.Post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+
+
+
+
+    </div>
+</div>
+
+
+
+
+@section Scripts{
+    <script>
+        $(function () {
+            var button = $("#commend-btn");
+            $("#comment-text").on('input', function (e) {
+                if (e.target.value.trim() === '') {
+                    // Textarea has no value
+                    button.attr('disabled', true);
+
+                    //button.hide();
+                } else {
+                    // Textarea has a value
+                    //button.show();
+                    button.attr('disabled', false);
+
+                }
+            });
+        })
+
+    </script>
+
+}

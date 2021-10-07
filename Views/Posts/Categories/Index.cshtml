@@ -1,0 +1,60 @@
+﻿@model NewsWebApp.ViewModels.CategoryViewModel
+@{
+    ViewData["Title"] = "All Categories";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<div class="container">
+    <div class="row">
+       
+        <div class="col-md-12">
+            <h3 class="text-muted">Categories</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <form asp-controller="categories" asp-action="Create" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input class="form-control my-3" asp-for="Category.Name" placeholder="Title" /> <br />
+
+                        <button type="submit" class="btn btn-primary">Create New Category</button>
+                    </form>
+                </div>
+                <div class="col-md-8">
+                    <table class="table  table-bordered cat" >
+                        <thead>
+                            <tr class="table-active">
+                                <th>
+                                    Category
+                                </th>
+                                <th>
+                                    Slug
+                                </th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <tr style="height:70px">
+                                    <td class="action-table">
+                                        @cat.Name
+                                        <span class="action-link">
+                                            <a href="/categories/delete/@cat.Id">Delete</a> |
+                                            <a href="/categories/edit/@cat.Id">Edit</a>
+                                        </span>
+                                    </td>
+                                    <td>@cat.Slug</td>
+                                </tr>
+
+                            }
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+

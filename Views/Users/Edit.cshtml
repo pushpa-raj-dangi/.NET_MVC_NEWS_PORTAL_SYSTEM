@@ -1,0 +1,51 @@
+﻿@model NewsWebApp.ViewModels.UserViewModel;
+@{
+    ViewData["Title"] = "Edit User";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 cr">
+            <input type="hidden" name="Id" value="" />
+
+            <div class="container my-5">
+                <form class="h-100" asp-controller="Users" enctype="multipart/form-data" asp-action="Edit" method="post">
+                    <div class="mb-5">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input class="form-control" placeholder="Add title" asp-for="Email">
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label"></label>
+                        <input class="form-control" asp-for="UserName">
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input class="form-control" asp-for="PhoneNumber">
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-8">
+                            <div class="upload-img p-4">
+                                <img id="editimg" src="~/uploads/@Model.Profile" />
+                                <input id="myimg" type="file" asp-for="ProfileImg" class="custom-in" />
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save</button>
+
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+}

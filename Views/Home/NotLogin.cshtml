@@ -1,0 +1,386 @@
+﻿@model NewsWebApp.ViewModels.HomeViewModel
+@{ ViewData["Title"] = "Mero News Provide";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+@*<form method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" asp-for="Search"/>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+        </div>
+    </form>*@
+<form asp-controller="Home" asp-action="Index" method="get">
+    <p>
+        Title: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
+
+    @*<div class="row">
+            <div class="col-md-4">
+                <ul class="list-group">
+
+                @foreach (var news in Model.PostsByAuthor)
+                {
+                    <li class="list-group-item">
+                        @news.Name
+                        <img src="~/uploads/@news.AppUser.ProfileImg" alt="Alternate Text" />
+                    </li>
+                }
+                </ul>
+                </div>
+        </div>*@
+
+    <div class="container">
+
+        <div class="row" id="firstrow">
+            @{ int i = 0;}
+            @foreach (var news in Model.FeatureNews)
+            {
+                i++;
+
+@if (i == 1)
+{
+<div class="col-md-7">
+
+    <div class="square-img overlay">
+        @if (news.Picture != null)
+        {
+<img src="~/uploads/@news.Picture" alt="@news.Name" /> }
+                    else
+                    { <img src="~/uploads/default.jpg" alt="@news.Name" />}
+        <div class="content">
+
+            @*<a class="category" href="/posts/postbycat/@news.PostCategories.FirstOrDefault().Category.Id">
+                    <span>
+                        @news.PostCategories.FirstOrDefault().Category.Name
+                    </span>
+                </a>*@
+
+            @*@foreach (var item in news.PostCategories)
+                {
+
+                    <a class="category" href="/posts/postbycat/@item.Category.Id">
+                        <span>
+                            @item.Category.Name
+                        </span>
+                    </a>
+                }*@
+            <br />
+            <a asp-controller="posts" asp-action="details" asp-route-id="@news.Id">
+                @news.Name
+            </a>
+            <div class="time">
+                <i class="fas fa-clock"></i>  @news.CreatedDate.ToString("dddd, dd MMMM yyyy")
+            </div>
+        </div>
+    </div>
+
+</div> }
+
+                else
+                {
+@if (i == 2)
+{
+<div class="col-md-5" />}
+
+                    <div class="small-square overlay mb-4">
+                        @if (news.Picture != null)
+                        {
+    <img src="~/uploads/@news.Picture" alt="@news.Name" /> }
+                        else
+                        {
+    <img src="/uploads/five.jpg" />                    }
+                        <div class="content">
+
+                            @*<a class="category" href="/posts/postbycat/@news.PostCategories.FirstOrDefault().Category.Id">
+                                    <span>
+                                        @news.PostCategories.FirstOrDefault().Category.Name
+                                    </span>
+                                </a>*@
+
+                            <br />
+                            <h6>
+                                <a href="/posts/details/@news.Id">
+                                    @news.Name
+                                </a>
+                            </h6>
+                            <div class="time">
+                                <i class="fas fa-clock"></i> @news.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                            </div>
+                        </div>
+                    </div>}}
+        </div>
+        <div class="row my-5" id="wrap">
+            <div class="col-md-12"> <div class="cat-title">Politics</div></div>
+            <div class="col-md-8">
+                @{ int j = 0;}
+                @foreach (var news in Model.PoliticsNews)
+                {
+                    j++;
+
+    @if (j == 1)
+    {
+<div class="square-img overlay">
+    @if (news.Picture != null)
+    {
+<img src="~/uploads/@news.Picture" style="height:400px;width:100%" alt="@news.Name" /> }
+                    else
+                    {
+<img class="mr-3" src="~/uploads/default.jpg" style="height:400px;width:100%" alt="@news.Name">}
+    <div class="content">
+        @*<div class="category">
+                <span>
+                    @news.PostCategories.FirstOrDefault().Category.Name
+                </span>
+            </div>*@
+
+        <a href="/posts/details/@news.Id">
+            @news.Name
+        </a>
+        <div class="time">
+            <i class="fas fa-clock"></i> @news.CreatedDate.ToString("dddd, dd MMMM yyyy")
+        </div>
+    </div>
+</div> }
+                else
+                {
+@if (j == 2)
+{
+<div class="row mt-4" />                    }
+
+                    <div class="col-md-4">
+                        <a class="text-dark" href="/posts/details/@news.Id">
+                            <div class="card border-0">
+                                @if (news.Picture != null)
+                                {
+            <img src="~/uploads/@news.Picture" alt="@news.Name" /> }
+                                else
+                                {
+            <img src="/uploads/five.jpg" />}
+                                <div class="card-body p-0 mt-3">
+                                    <h6 class="card-title">
+                                        @news.Name
+                                    </h6>
+                                    <div class="time text-dark">
+                                        <i class="fas fa-clock"></i>  @news.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                                        @if (j == 5)
+                                        {
+                    <div class="row mt-4" />                    }                }            }
+            </div>
+
+        </div>
+        <div class="col-md-4 latest">
+            <div class="cat-title">Latest Update</div>
+            <ul class="list-unstyled">
+                @foreach (var post in Model.LatestUpdate)
+                {
+    <li class="media">
+        <a href="/posts/details/@post.Id" class="text-dark d-flex">
+            @if (post.Picture != null)
+            {
+<img class="mr-3" src="~/uploads/@post.Picture" alt="@post.Name"> }
+                else
+                {
+<img class="mr-3" src="~/uploads/default.jpg" alt="@post.Name">}
+
+            <div class="media-body">
+                <h6 class="mt-0 mb-1">
+                    @post.Name
+                    @*@{post.Name.Length < 0 ? post.Name : post.Name.Substring(0, 10);}*@
+                </h6>
+                <div class="time text-dark">
+                    <i class="fas fa-clock"></i>  @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                </div>
+            </div>
+
+        </a>
+    </li>            }
+
+
+
+            </ul>
+        </div>
+        <div class="row business my-5">
+            <div class="col-md-12">
+                <div class="cat-title">BUSINESS</div>
+            </div>
+            @foreach (var post in Model.BusinessNews)
+            {
+<div class="col-md-3">
+    <a href="/posts/details/@post.Id">
+        <div class="card border-0">
+            @if (post.Picture != null)
+            {
+<img class="card-img-top" src="~/uploads/@post.Picture" alt="Card image cap"> }
+                else
+                {
+
+<img class="card-img-top" src="~/uploads/default.jpg" alt="Card image cap">}
+            <div class="card-body p-0 mt-3">
+                <h6 class="card-title">
+                    @post.Name
+                </h6>
+                <div class="time">
+                    <i class="fas fa-clock"></i> @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                </div>
+            </div>
+        </div>
+
+    </a>
+</div>}
+
+        </div>
+    </div>
+    <div class="container-fluid feature-news">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="cat-title">Feature News</div>
+                </div>
+                @foreach (var post in Model.FeatureNews)
+                {
+    <div class="col-md-4">
+        <a class="text-light" href="/posts/details/@post.Id">
+            <div class="square-img overlay">
+                @if (post.Picture != null)
+                {
+
+<img src="~/uploads/@post.Picture" style="height:450px;width:100%;border-radius:5px" alt="@post.Name" /> }
+                else
+                {
+<img style="height:450px;width:100%;border-radius:5px" src="~/uploads/default.jpg" alt="@post.Name">}
+                <div class="content p-3" style="border-radius:5px">
+                    @*<div class="category">
+                            <span>
+                                @post.PostCategories.FirstOrDefault().Category.Name
+                            </span>
+                        </div>*@
+
+                    <h5>
+
+                        @post.Name
+
+                    </h5>
+
+                    <div class="time">
+                        <i class="fas fa-clock"></i> @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>            }
+            </div>
+        </div>
+    </div>
+    <div class="container tech my-5">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="cat-title">
+                    Science & Technologoy
+                </div>
+                <ul class="list-unstyled">
+                    @foreach (var post in Model.TechnologyNews)
+                    {
+        <li class="media">
+            <a class="row" asp-controller="posts" asp-action="details" asp-route-id="@post.Id">
+                <div class="col-md-4">
+                    @if (post.Picture != null)
+                    {
+
+    <img class="mr-3" src="~/uploads/@post.Picture" alt="Generic placeholder image"> }
+                    else
+                    {
+    <img class="mr-3" src="~/uploads/default.jpg" alt="Generic placeholder image">}
+                </div>
+                <div class="media-body col-md-8">
+                    <h5 class="mt-0 mb-1">
+                        @post.Name
+                    </h5>
+                    <div class="time text-dark">
+                        <i class="fas fa-clock"></i> @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                    </div>
+                </div>
+
+            </a>
+        </li>}
+
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="cat-title">Sports</div>
+                @foreach (var post in Model.SportsNews)
+                {
+    <a href="/posts/details/@post.Id">
+        <div class="card border-0 mb-3">
+            @if (post.Picture != null)
+            {
+
+<img class="card-img-top" src="~/uploads/@post.Picture" alt="Card image cap"> }
+                else
+                {
+<img src="~/uploads/default.jpg" class="card-img-top" alt="Alternate Text" />}
+            <div class="card-body p-0 mt-3">
+                <h6 class="card-title">
+                    @post.Name
+                </h6>
+                <div class="time text-dark">
+                    <i class="fas fa-clock"></i> @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                </div>
+            </div>
+        </div>
+    </a>            }
+
+            </div>
+        </div>
+    </div>
+
+    <div class="entertainment container-fluid" style="background:rgba(0,0,0,.88);
+    padding: 50px 0px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="cat-title">Entertainment</div>
+                </div>
+                @foreach (var post in Model.EntertainmentNews)
+                {
+    <div class="col-md-4">
+        <a href="/posts/details/@post.Id">
+            <div class="square-img overlay">
+                @if (post.Picture != null)
+                {
+<img src="~/uploads/@post.Picture" style="height:450px;width:100%;border-radius:5px" alt="Alternate Text" /> }
+                else
+                {
+<img src="~/uploads/default.jpg" style="height:450px;width:100%;border-radius:5px" alt="Alternate Text" />}
+                <div class="content p-3" style="border-radius:5px">
+                    <div class="category">
+                        <span>
+                            Entertainment
+                        </span>
+                    </div>
+
+
+                    <h5 class="text-light">
+                        @post.Name
+                    </h5>
+
+                    <div class="time">
+                        <i class="fas fa-clock"></i> @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>            }
+            </div>
+        </div>
+    </div>

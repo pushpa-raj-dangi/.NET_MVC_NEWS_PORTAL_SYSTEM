@@ -1,0 +1,64 @@
+﻿@model PostDetailViewModel
+
+<div id="comment" class="shadow-sm py-5 bg-light p-3 my-5">
+    <h4>Comments</h4>
+    <hr />
+    @foreach (var item in Model.ListComments)
+    {
+        <div class="py-3 row no-gutters">
+            <div class="col-md-1">
+                @{
+                    var index = item.AppUser.UserName.IndexOf('@');
+                    var name = item.AppUser.UserName.Substring(0, index);
+                }
+                <img class="comment-img" style="border-radius:50%" src="~/uploads/@item.AppUser.ProfileImg" alt="@item.AppUser.UserName" />
+            </div>
+            <div class="col-md-11">
+                <h4 class="text-dark">@name</h4>
+                <hr />
+                <h5 class="text-black-50" style="line-height:1.2">@item.CContent</h5>
+                <span class="text-muted">
+                    @Model.GetTimeAgo(item.DateComment)
+                </span>
+            </div>
+            @*<div class="col-md-12 seperator"></div>*@
+        </div>
+    }
+</div>
+@using (Html.BeginForm("Add", "Comments", FormMethod.Post,new { onsubmit = "return Submit()" }))
+{<div class="comment-wrap box-shadow">
+        <div class=" ml-5 pl-2"> <h4 class="text-primary">Comment Here</h4></div>
+        @Html.AntiForgeryToken()
+        <div class="form-group row align-items-baseline no-gutters">
+            <label for="inputPassword" class="col-md-1 col-form-label">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <img class="comment-img" src="~/uploads/@Model.AppUser.ProfileImg" />
+                }
+                else
+                {
+                    <img class="comment-img" src="~/uploads/fe43d22b-e86c-4713-8b00-ee5bece3222a_3a217753-0173-4db5-89e9-ce044f9f2c32_undraw_newspaper_k72w.png" />
+                }
+            </label>
+            <div class="col-md-10">
+                <input type="hidden" asp-for="PostId" />
+                <input type="hidden" asp-for="Slug" />
+                <textarea asp-for="Comment" class="form-control" id="comment-text" rows="3"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+
+
+
+                    <button id="commend-btn" type="submit" disabled class="btn btn-primary mt-3">Add Comment</button>
+                }
+                else
+                {
+
+                    <a class="btn btn-primary mt-3" href="/identity/account/login?ReturnUrl=%2Fposts/news/@Model.Slug">Log in to comment</a>
+                }
+            </div>
+        </div>
+    </div>
+}

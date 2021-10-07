@@ -1,0 +1,149 @@
+﻿@model IEnumerable<NewsWebApp.Models.Comment>
+
+@{
+    ViewData["Title"] = "Dashboard : Pending Comments";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+
+<p>
+    @*<a asp-action="Create">Create New</a>*@
+</p>
+<div class="container-fluid">
+    <h1>All Comments</h1>
+    <table class="table pt">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CContent)
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Post)*@
+                    User
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsApproved)
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CContent)
+                    </td>
+                    <td>
+                        @{
+                            var index = item.Post.AppUser.UserName.IndexOf('@');
+
+                            var name = item.Post.AppUser.UserName.Substring(0, index);
+                        }
+                        @name
+
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateComment)
+                    </td>
+                    <td>
+                        @if (item.IsApproved)
+                        {
+
+                            <span>☑️</span>
+                        }
+                        else
+                        {
+                            <span>❌</span>
+                        }
+                    </td>
+                    <td>
+
+                        <button class="btn btn-primary btn-sm approve"  data-id="@item.CommentId">Approve</button>
+                        <a class="btn btn-danger btn-sm delBtn text-light" data-id="@item.CommentId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts{
+
+    <script>
+       
+    $(
+        function () {
+            $(".approve").click(function (event) {
+                var btn = $(".approve");
+                var id = Number($('.approve').attr("data-id"));
+               let  data = JSON.stringify({ commentId: id });
+               
+
+            alertify.confirm("Are you sure to approve?",
+                function () {
+                    $.ajax({
+                        method: "PUT",
+                        url: "/api/comments/"+id,
+                        data: data,
+                        contentType: "application/json",
+                    }).done(function () {
+                        event.target.parentElement.parentElement.remove();
+                      
+                    alertify.success('Comment is approved!');
+                    }).fail(function (msg) {
+                        console.log('FAIL');
+                    }
+            ).always(function (msg) {
+                         
+                        });
+                },
+                function () {
+                    alertify.error('Cancel');
+                });
+            })
+
+
+            $(".delBtn").click(function (event) {
+                var btn = $(".delBtn");
+                var id = Number($('.delBtn').attr("data-id"));
+                let data = JSON.stringify({ commentId: id });
+
+
+                alertify.confirm("Are you sure to Delete?",
+                    function () {
+                        $.ajax({
+                            method: "DELETE",
+                            url: "/api/comments/" + id,
+                            data: data,
+                            contentType: "application/json",
+                        }).done(function () {
+                            event.target.parentElement.parentElement.remove();
+
+                            alertify.success('Comment is Deleted!');
+                        }).fail(function (msg) {
+                            console.log('FAIL');
+                        }
+                        ).always(function (msg) {
+
+                        });
+                    },
+                    function () {
+                        alertify.error('Cancel');
+                    });
+            })
+
+            
+        }
+        );
+
+      
+    </script>
+}

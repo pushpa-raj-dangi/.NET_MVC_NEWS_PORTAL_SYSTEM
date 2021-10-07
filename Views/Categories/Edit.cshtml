@@ -1,0 +1,27 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Edit Category";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md">
+            <h1>Edit Category</h1>
+            <div class="row my-5">
+                <div class="col-md-4">
+                    <form class="form-group mb-5" method="post" asp-action="Edit">
+                        @Html.TextBoxFor(c => c.Name, new { @class = "form-control" })
+                        @*<input type="text" asp-for="Category.Name" class="form-control my-3" />*@
+                        @Html.HiddenFor(c => c.Id)
+
+                        <input type="submit" class="btn btn-primary mt-3" name="name" value="Save" />
+                    </form>
+                    <a href="/categories" class="btn btn-primary"> ← Back to Categories</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+

@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Post>
+@{
+    ViewData["Title"] = "Dashboard : All posts ";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+
+}
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-12">
+            @*<h1>All Post</h1>*@
+            <div class="row">
+                @*<div class="col-md-4 offset-8">
+                    <input id="input" class="form-control my-3" type="text" placeholder="Search Post...">
+                    </div>*@
+                <table class="table table-borderd pt" id="postTable">
+                    <thead>
+                        <tr class="table-active">
+                            <th>
+                                Title
+                            </th>
+                            <th>
+                                Categories
+                            </th>
+                            <th>
+                                Tags
+                            </th>
+                            <th>
+                                Author
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table">
+                        @foreach (var post in Model)
+                        {
+                            <tr style="height:85px">
+                                <td class="action-table">
+                                    @post.Name
+                                    @if (User.IsInRole("Admin") || post.AppUser.UserName == User.Identity.Name)
+                                    {
+                                        <span class="action-link">
+                                            <span class="text-danger dbtn" data-id="@post.Id"> Delete </span>|
+                                            <a href="/posts/edit/@post.Id">Edit</a> |
+                                            <a href="/posts/news/@post.Slug">View</a>
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @string.Join(", ", post.PostCategories.Select(p => p.Category.Name))
+                                </td>
+
+                                <td>
+                                    @string.Join(", ", post.PostTags.Select(p => p.Tag.Name))
+                                </td>
+                                <td style=" display: flex; align-items: center;">
+                                    @{
+                                        var index = post.AppUser.UserName.IndexOf('@');
+
+                                        var name = post.AppUser.UserName.ToString().Substring(0, index);
+                                    }
+
+                                    @if (post.AppUser.ProfileImg != null)
+                                    {
+                                        <a href="/posts/postbyauthor/@post.AppUser.Id">
+
+                                            <img class="img-profile rounded-circle" style="object-fit:cover;width:30px !important;height:30px !important" rounded-circle" src="~/uploads/@post.AppUser.ProfileImg" />
+                                        </a>
+                                    }@name
+                                </td>
+
+                            </tr>
+
+
+                        }
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
