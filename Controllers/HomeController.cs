@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NewsWebApp.Data;
+using NewsWebApp.Extensions;
+using NewsWebApp.Helpers;
 using NewsWebApp.Models;
 using NewsWebApp.ViewModels;
 namespace NewsWebApp.Controllers
@@ -24,18 +26,19 @@ namespace NewsWebApp.Controllers
         }
 
 
-        public IActionResult Search(string Search)
+        public IActionResult Search(string Search, int page=1)
 
 
         {
             var posts = from m in _context.Posts select m;
-
+            PagedResult<Post> lst = new PagedResult<Post>();
             if (!String.IsNullOrEmpty(Search))
             {
                  posts = posts.Where(x=>x.Name.Contains(Search));
+                lst = posts.GetPaged(page,10);
                 ViewData["Wtitle"] = Search;
             }
-                return View("Search", posts.ToList());
+                return View("Search", lst);
 
         }
         [ResponseCache(Duration = 5, Location = ResponseCacheLocation.None, NoStore = true)]

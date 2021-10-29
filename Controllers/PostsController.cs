@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using X.PagedList;
 using NewsWebApp.Services;
 using NewsWebApp.Repositories;
+using NewsWebApp.Extensions;
 
 namespace NewsWebApp.Controllers
 {
@@ -256,9 +257,9 @@ namespace NewsWebApp.Controllers
 
         public IActionResult Category(string slug)
         {
-            var post = _context.Posts.Where(p => p.PostCategories.Any(pc => pc.Category.Slug.Equals(slug))).OrderByDescending(p => p.CreatedDate).Where(x => x.PostStatus == PostStatus.Publish).ToList();
-
-            if (post.Count == 0)
+            var post = _context.Posts.Where(p => p.PostCategories.Any(pc => pc.Category.Slug.Equals(slug))).OrderByDescending(p => p.CreatedDate).Where(x => x.PostStatus == PostStatus.Publish).GetPaged(1, 10);
+            
+            if (post.Results.Count == 0)
             {
                 Response.StatusCode = 404;
                 return View("NotFound", slug);

@@ -25,12 +25,12 @@
             <div class="shadow-sm p-3">
 
                 @*@{
-                    if (User.Identity.IsAuthenticated && Model.AppUser.UserName == User.Identity.Name)
-                    {
-                        <div class="">
-                            <partial name="_Actions" model="Model" />
-                        </div>
-                    } }*@
+                if (User.Identity.IsAuthenticated && Model.AppUser.UserName == User.Identity.Name)
+                {
+                    <div class="">
+                        <partial name="_Actions" model="Model" />
+                    </div>
+                } }*@
                 <h3 class="my-5">@Model.Post.Name</h3>
                 <hr />
 
@@ -76,7 +76,7 @@
                     @foreach (var item in Model.Post.PostTags)
                     {
                         <a href="/posts/postbytag/@item.Tag.Id" class="tag">
-                            # @item.Tag.Name 
+                            # @item.Tag.Name
                         </a>
                     }
                 </div>

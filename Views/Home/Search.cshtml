@@ -1,50 +1,58 @@
-﻿@model IEnumerable<Post> 
+﻿@model PagedResult<Post>
 
-@{ 
+@{
     var title = ViewData["Wtitle"] as string;
 
     ViewData["Title"] = "Search for : " + title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    }
+}
 
 
 <div class="container my-5">
     <div class="row business my-5">
-    <div class="col-md-12">
-        <div class="cat-title">@title</div>
-    </div>
-    @if(Model.Count() == 0)
-            {
+        <div class="col-md-12">
+            <div class="cat-title">@title</div>
+        </div>
+        @if (Model.Results.Count() == 0)
+        {
 
-    <div class="col-md-12">
-        <h4>No Result for <u><b>@title</b></u></h4>
-    </div>
-            }
-
-    @foreach (var post in Model)
-    {
-<div class="col-md-3">
-    <a href="/posts/news/@post.Slug">
-        <div class="card border-0">
-            @if (post.Picture != null)
-            {
-<img class="card-img-top" src="~/uploads/@post.Picture" alt="Card image cap"> }
-else
-{
-
-<img class="card-img-top" src="~/uploads/default.jpg" alt="Card image cap">}
-            <div class="card-body p-0 mt-3">
-                <h6 class="card-title">
-                    @post.Name
-                </h6>
-                <div class="time">
-                    <i class="fas fa-clock"></i> @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+            <div class="col-md-12">
+                <div class="py-5 text-center">
+                    <h4>No Result for <u><b>@title</b></u></h4>
+                    <img src="~/uploads/404.png" alt="Alternate Text" />
+                    <br />
+                    <a href="/" class="shadow-sm mt-4 btn btn-primary">GO TO HOMEPAGE</a>
                 </div>
             </div>
-        </div>
+        }
 
-    </a>
-</div>}
+        @foreach (var post in Model.Results)
+        {
+            <div class="col-md-3">
+                <a href="/posts/news/@post.Slug">
+                    <div class="card border-0">
+                        @if (post.Picture != null)
+                        {
+                            <img class="card-img-top" src="~/uploads/@post.Picture" alt="Card image cap"> }
+                        else
+                        {
 
-</div></div>
+                            <img class="card-img-top" src="~/uploads/default.jpg" alt="Card image cap">}
+                        <div class="card-body p-0 mt-3">
+                            <h6 class="card-title">
+                                @post.Name
+                            </h6>
+                            <div class="time">
+                                <i class="fas fa-clock"></i> @post.CreatedDate.ToString("dddd, dd MMMM yyyy")
+                            </div>
+                        </div>
+                    </div>
+
+                </a>
+            </div>}
+
+    </div>
+    @(await Component.InvokeAsync<PagerViewComponent>(Model))
+
+</div>
